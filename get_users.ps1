@@ -1,7 +1,13 @@
 # getting servers to check
-$servers = Get-Content -Path "servers.secret"
+$content = Get-Content servers.secret | ConvertFrom-Json
+
+$desktops = $content.Desktops
+$servers = $content.Servers
 
 # getting users
-$users = Get-WmiObject -computername $env:computername -class Win32_UserAccount -filter "LocalAccount=True" | select PSComputername, Name, Status
+foreach ($desktop in $desktops) {
+    Write-Output $desktop
+    #$users = Get-WmiObject -computername $server -class Win32_UserAccount -filter "LocalAccount=True" | select PSComputername, Name, Status
+}
 
 Write-Output $users
