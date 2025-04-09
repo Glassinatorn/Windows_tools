@@ -6,8 +6,8 @@ $servers = $content.Servers
 
 # getting users
 foreach ($desktop in $desktops) {
-    Write-Output $desktop
-    #$users = Get-WmiObject -computername $server -class Win32_UserAccount -filter "LocalAccount=True" | select PSComputername, Name, Status
+    $users = Get-WmiObject -computername $desktop -class Win32_UserAccount -filter "LocalAccount=True" | select PSComputername, Name, Status
+
+    Write-Output $users
 }
 
-Write-Output $users
