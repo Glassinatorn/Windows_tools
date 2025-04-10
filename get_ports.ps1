@@ -1,0 +1,2 @@
+# fetching ports
+Get-NetTCPConnection | Where-Object { $_.State -eq "Listen" -or $_.State -eq "Established" -or $_.State -eq "Bound" } | Select-Object -Property LocalPort, RemoteAddress, State, OwningProcess
