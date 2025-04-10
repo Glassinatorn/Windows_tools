@@ -15,6 +15,8 @@ $content = Get-Content servers.secret | ConvertFrom-Json
 $desktops = $content.Desktops
 $servers = $content.Servers
 
+$command = Get-WmiObject -computername $desktop -class Win32_UserAccount -filter "LocalAccount=True" | select PSComputername, Name, Status
+
 do {
     Show-Menu
 
@@ -24,14 +26,14 @@ do {
             Clear-Host
             foreach ($desktop in $desktops) {
 
-                $users = Get-WmiObject -computername $desktop -class Win32_UserAccount -filter "LocalAccount=True" | select PSComputername, Name, Status
+                $users = $command
 
                 Write-Output $users
             }
         } '2' {
             Clear-Host
             foreach ($server in $servers) {
-                $users = Get-WmiObject -computername $server -class Win32_UserAccount -filter "LocalAccount=True" | select PSComputername, Name, Status
+                $users = Invoke-Command -ComputerName $server -ScriptBlock { $command }
 
                 Write-Output $users
             }
